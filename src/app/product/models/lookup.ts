@@ -1,6 +1,5 @@
 export class Lookup {
-  name:string;
-  code:string;
-  category:number;
-
+    name:string;
+    code:string;
+    category:number;
 }
