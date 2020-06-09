@@ -11,21 +11,21 @@ import { Router } from '@angular/router';
 })
 export class ListComponent implements OnInit {
 
-  public products:Observable<IProduct[]> = null;
+  public products: Observable<IProduct[]> = null;
   constructor(
     private router: Router,
-    private productService:ProductService) { }
+    private productService: ProductService) { }
 
   ngOnInit() {
-      this.products = this.productService.getAllProducts()
+      this.products = this.productService.getAllProducts();
   }
 
-  deleteProduct(product):void{
+  deleteProduct(product): void {
     const result = this.productService.deleteProduct(product);
     console.log(result);
   }
 
-  viewProduct(product:IProduct):void{
-    this.router.navigate(['products/view/'+product.id]);
+  viewProduct(product: IProduct): void {
+    this.router.navigate(['products/view/' + product.id]);
   }
 }

@@ -3,13 +3,13 @@ import { Routes, RouterModule } from '@angular/router';
 
 const routes: Routes = [
   {
-    path:'',
-    redirectTo :'/products',
-    pathMatch:'full'
+    path: '',
+    redirectTo : '/products',                    // loading default page
+    pathMatch: 'full'
   },
   {
-    path:'products',
-    loadChildren:'./product/product.module#ProductModule'
+    path: 'products',
+    loadChildren: './product/product.module#ProductModule' // product will load module
   }
 ];
 

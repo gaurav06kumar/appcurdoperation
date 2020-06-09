@@ -5,6 +5,8 @@ import { Observable, of } from 'rxjs';
 @Injectable({
   providedIn: 'root'
 })
+
+// lookup data is master data that will not changed only for reetrived
 export class LookupService {
 private units: Array<Lookup> = [
   {name: 'PCS', code: '1', category: 1},
@@ -24,10 +26,10 @@ private productCategories: Array<Lookup> = [
 
   constructor() { }
 
-  getProductCategories(): Observable<Lookup[]>{
+  getProductCategories(): Observable<Lookup[]> {
     return of(this.productCategories);
   }
-  getUnits(): Observable<Lookup[]>{
+  getUnits(): Observable<Lookup[]> {
     return of(this.units);
   }
 }

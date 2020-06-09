@@ -6,19 +6,19 @@ import { ViewComponent } from './view/view.component';
 
 const routes: Routes = [
   {
-    path:'',
-    component:ListComponent
-  },{
-    path:'add',
-    component:AddComponent
+    path: '',
+    component: ListComponent                             // loading the list component
+  }, {
+    path: 'add',
+    component: AddComponent
   },
   {
-    path:'edit/:id',
-    component:AddComponent
+    path: 'edit/:id',
+    component: AddComponent
   },
   {
     path: 'view/:id',
-    component:ViewComponent
+    component: ViewComponent
 
   }
 ];
