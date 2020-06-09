@@ -4,7 +4,7 @@ import { Observable, Subscription } from 'rxjs';
 import { Lookup } from '../models/lookup';
 import { LookupService } from 'src/app/shared/lookup.service';
 import { Product, IProduct } from '../models/product';
-import { ProductService } from '../service/product.service';
+import { ProductService } from '../services/product.service';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { switchMap } from 'rxjs/operators';
 import { isNullOrUndefined } from 'util';
@@ -38,7 +38,7 @@ export class AddComponent implements OnInit, OnDestroy {
     this.productForm.addControl('unit', new FormControl('', [Validators.required]));
     this.productForm.addControl('purchaseRate', new FormControl('', [Validators.required]));
     this.productForm.addControl('salesRate', new FormControl('', [Validators.required]));
-    this.units = this.lookupService.getUnits();
+    this.units = this.lookupService.getUnits();           // lodeing the lookup services
     this.categories = this.lookupService.getProductCategories();
 
     const product$ = this.route.paramMap.pipe(

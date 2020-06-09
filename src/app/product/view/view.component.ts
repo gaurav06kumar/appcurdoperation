@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
 import { switchMap } from 'rxjs/operators';
 import { IProduct } from '../models/product';
-import { ProductService } from '../service/product.service';
+import { ProductService } from '../services/product.service';
 import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 
 @Component({
@@ -12,26 +12,28 @@ import { ActivatedRoute, Router, ParamMap } from '@angular/router';
 })
 export class ViewComponent implements OnInit {
 
-  product$:Observable<IProduct>;
+  product$: Observable<IProduct>;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
-    private productService:ProductService) { }
+    private productService: ProductService) { }
 
   ngOnInit() {
 
     this.product$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
+          // tslint:disable-next-line: radix
           this.productService.getProductById(Number.parseInt(params.get('id')))
         ));
     }
 
-    editProduct(product:IProduct):void{
-      
-      this.product$.subscribe(product =>{
+    editProduct(product: IProduct): void {
+
+      // tslint:disable-next-line: no-shadowed-variable
+      this.product$.subscribe(product => {
         console.log('edit clicked');
-        this.router.navigate(['products/edit/'+product.id]);
+        this.router.navigate(['products/edit/' + product.id]);
       });
   }
 }
