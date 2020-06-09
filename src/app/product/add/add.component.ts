@@ -17,37 +17,38 @@ import { isNullOrUndefined } from 'util';
 })
 export class AddComponent implements OnInit, OnDestroy {
 
-  private observableSubscription:Array<Subscription> = [];
+  private observableSubscription: Array<Subscription> = [];
   formSubmitted = false;
   productForm = this.fb.group({});
-  units:Observable<Lookup[]>;
-  categories:Observable<Lookup[]>;
+  units: Observable<Lookup[]>;
+  categories: Observable<Lookup[]>;
 
-  constructor(private fb:FormBuilder,
-    private lookupService:LookupService,
-    private productService:ProductService,
-    private route: ActivatedRoute,
-    private router: Router
+  constructor(private fb: FormBuilder,
+              private lookupService: LookupService,
+              private productService: ProductService,
+              private route: ActivatedRoute,
+              private router: Router
     ) { }
 
   ngOnInit() {
-    this.productForm.addControl('id',new FormControl(''));
-    this.productForm.addControl('name',new FormControl('',[Validators.required]));
-    this.productForm.addControl('code',new FormControl('',[Validators.required]));
-    this.productForm.addControl('category',new FormControl('',[Validators.required]));
-    this.productForm.addControl('unit',new FormControl('',[Validators.required]));
-    this.productForm.addControl('purchaseRate',new FormControl('',[Validators.required]));
-    this.productForm.addControl('salesRate',new FormControl('',[Validators.required]));
+    this.productForm.addControl('id', new FormControl(''));
+    this.productForm.addControl('name', new FormControl('', [Validators.required]));
+    this.productForm.addControl('code', new FormControl('', [Validators.required]));
+    this.productForm.addControl('category', new FormControl('', [Validators.required]));
+    this.productForm.addControl('unit', new FormControl('', [Validators.required]));
+    this.productForm.addControl('purchaseRate', new FormControl('', [Validators.required]));
+    this.productForm.addControl('salesRate', new FormControl('', [Validators.required]));
     this.units = this.lookupService.getUnits();
     this.categories = this.lookupService.getProductCategories();
 
     const product$ = this.route.paramMap.pipe(
       switchMap((params: ParamMap) =>
+          // tslint:disable-next-line: radix
           this.productService.getProductById(Number.parseInt(params.get('id')))
         ));
 
-        product$.subscribe(product=>{
-          if(!isNullOrUndefined(product)){
+    product$.subscribe(product => {
+          if (!isNullOrUndefined(product)) {
             console.log(product);
             this.productForm.get('id').setValue(product.id);
             this.productForm.get('name').setValue(product.name);
@@ -57,20 +58,20 @@ export class AddComponent implements OnInit, OnDestroy {
             this.productForm.get('salesRate').setValue(product.salesRate);
             this.productForm.get('purchaseRate').setValue(product.purchaseRate);
           }
-        })
+        });
   }
 
-  ngOnDestroy(){
+  ngOnDestroy() {
     this.observableSubscription.forEach(item => {
       item.unsubscribe();
       console.log(item, 'unsubscribed');
     });
   }
 
-  save($event:any):void{
+  save($event: any): void {
 
     this.formSubmitted = true;
-    if(!this.productForm.valid){
+    if (!this.productForm.valid) {
       return;
     }
 
@@ -80,10 +81,10 @@ export class AddComponent implements OnInit, OnDestroy {
     this.router.navigate(['/products']);
   }
 
-  saveAndContinue($event:any):void{
+  saveAndContinue($event: any): void {
     this.formSubmitted = true;
     console.log(this.productForm.get('name').errors);
-    if(!this.productForm.valid){
+    if (!this.productForm.valid) {
       return;
     }
 
@@ -91,8 +92,8 @@ export class AddComponent implements OnInit, OnDestroy {
 
   }
 
-  saveProduct():void{
-    const product =new Product();
+  saveProduct(): void {
+    const product = new Product();
     // map data from form to product
     product.id = this.productForm.get('id').value;
     product.name = this.productForm.get('name').value;
@@ -103,19 +104,21 @@ export class AddComponent implements OnInit, OnDestroy {
     product.salesRate = this.productForm.get('salesRate').value;
 
     // save to database
-    if(product.id == 0){
-      this.productService.addNewProduct(product);}
-      else {
+    // tslint:disable-next-line: triple-equals
+    if (product.id == 0) {
+      this.productService.addNewProduct(product); } else {
         this.productService.updateProduct(product);
       }
   }
 
 
-  getLookupObjFromCode(code:string):Lookup{
-    var lookup:Lookup = null;
+  getLookupObjFromCode(code: string): Lookup {
+    // tslint:disable-next-line: no-var-keyword
+    var lookup: Lookup = null;
     const subscription = this.units.subscribe(lookups => {
-      lookup  = lookups.find(item => item.code == code)
-    })
+      // tslint:disable-next-line: triple-equals
+      lookup  = lookups.find(item => item.code == code);
+    });
     subscription.unsubscribe();
     return lookup;
   }
